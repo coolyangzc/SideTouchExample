@@ -1,6 +1,7 @@
 package pcg.yzc.sidetouchexample;
 
 import android.os.Handler;
+import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,9 +17,8 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
 
     DrawingView drawingView;
-    static TextView textView_touchInfo, textView_sideInfo, textView_viewInfo;
-
-    Handler handler;
+    static TextView textView_touchInfo, textView_resultInfo;
+    public TextHandler textHandler = new TextHandler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +36,7 @@ public class MainActivity extends AppCompatActivity {
         drawingView = (DrawingView) findViewById(R.id.drawingView);
         drawingView.initialize();
         textView_touchInfo = (TextView) findViewById(R.id.textView_touchInfo);
-        textView_sideInfo = (TextView) findViewById(R.id.textView_sideInfo);
-        textView_viewInfo = (TextView) findViewById(R.id.textView_viewInfo);
+        textView_resultInfo = (TextView) findViewById(R.id.textView_resultInfo);
     }
 
     @Override
@@ -69,5 +68,19 @@ public class MainActivity extends AppCompatActivity {
             type = 2;
         }
         return type;
+    }
+
+    public void update(String s) {
+        Message msg = new Message();
+        msg.obj = s;
+        textHandler.sendMessage(msg);
+    }
+
+    class TextHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            textView_resultInfo.setText((String)msg.obj);
+        }
     }
 }

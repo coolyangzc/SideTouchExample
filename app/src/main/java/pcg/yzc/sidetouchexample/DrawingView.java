@@ -2,12 +2,12 @@ package pcg.yzc.sidetouchexample;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Canvas;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,10 +17,12 @@ import java.lang.StringBuilder;
 public class DrawingView extends View implements Runnable {
 
     private Paint capaPaint = null;
-    int[][] capa = new int[6][Common.CapaNum_H]; //0~2: Left; 3~5: Right; 0~30: Up~Down
+    private MainActivity activity;
+    int[][] capa = new int[6][Common.CapaNum_H]; //0~2: Left; 3~5: Right; 0~29: Up~Down
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        activity = (MainActivity) context;
         capaPaint = new Paint();
         capaPaint.setStyle(Paint.Style.FILL);
     }
@@ -68,7 +70,6 @@ public class DrawingView extends View implements Runnable {
                     capa[index][index2] = Integer.valueOf(capaValues[index2].trim());
                 }
             }
-            //MainActivity.textView_sideInfo.setText(text);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,13 +80,15 @@ public class DrawingView extends View implements Runnable {
     public void run() {
         long startTime = System.currentTimeMillis();
         int frameCount = 0;
+
         while (true) {
             getString("proc/touchscreen/tp_capacitance_data");
             postInvalidate();
             frameCount++;
-            //MainActivity.textView_viewInfo.setText(String.valueOf(frameCount));
             if (System.currentTimeMillis() > startTime)
-                Log.d("frame", "frame = " + frameCount + ", frame rate = " + (frameCount * 1000 / (System.currentTimeMillis() - startTime)));
+                Log.d("frame", "frame = " + frameCount + ", frame rate = "
+                        + (frameCount * 1000 / (System.currentTimeMillis() - startTime)));
+            activity.update(String.valueOf(frameCount));
         }
     }
 }
