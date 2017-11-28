@@ -16,8 +16,8 @@
     <TextView
         android:id="@+id/textView_resultInfo"
         android:layout_width="395dp"
-        android:layout_height="127dp"
-        android:layout_marginTop="504dp"
+        android:layout_height="167dp"
+        android:layout_marginTop="404dp"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"

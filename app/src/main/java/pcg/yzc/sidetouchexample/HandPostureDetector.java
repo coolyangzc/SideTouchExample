@@ -18,11 +18,10 @@ public class HandPostureDetector {
                     highestR = j;
             }
         }
-        if (countL * countR == 0)
-            if (countR == 0)
-                confL += 1;
-            else
-                confR += 1;
+        if (countL > 0 && countR == 0)
+            confL += 1;
+        else if (countR > 0 && countL == 0)
+            confR += 1;
         if (highestL >= 0 && highestR >= 0)
             if (highestL <= 5 && highestR > 6)
                 confL += 1;

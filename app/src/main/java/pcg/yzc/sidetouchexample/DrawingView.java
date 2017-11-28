@@ -18,12 +18,14 @@ public class DrawingView extends View implements Runnable {
 
     private Paint capaPaint = null;
     private MainActivity activity;
+    private HandPostureDetector hDetector;
     int[][] capa = new int[6][Common.CapaNum_H]; //0~2: Left; 3~5: Right; 0~29: Up~Down
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
         activity = (MainActivity) context;
         capaPaint = new Paint();
+        hDetector = new HandPostureDetector();
         capaPaint.setStyle(Paint.Style.FILL);
     }
 
@@ -85,10 +87,18 @@ public class DrawingView extends View implements Runnable {
             getString("proc/touchscreen/tp_capacitance_data");
             postInvalidate();
             frameCount++;
-            if (System.currentTimeMillis() > startTime)
+            if (System.currentTimeMillis() > startTime && frameCount % 100 == 0)
                 Log.d("frame", "frame = " + frameCount + ", frame rate = "
                         + (frameCount * 1000 / (System.currentTimeMillis() - startTime)));
-            activity.update(String.valueOf(frameCount));
+
+            double res = hDetector.predict(capa);
+            String s = "空\n";
+            if (res < 0)
+                s = "左\n";
+            if (res > 0)
+                s = "右\n";
+            s += String.valueOf(res) + "\n" + String.valueOf(frameCount);
+            activity.update(s);
         }
     }
 }
