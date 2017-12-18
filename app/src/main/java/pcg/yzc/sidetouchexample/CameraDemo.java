@@ -1,15 +1,18 @@
 package pcg.yzc.sidetouchexample;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 
-public class LockScreenDemo {
+public class CameraDemo {
     private boolean display;
     private HandPostureResult res;
-    public Bitmap bg_empty, bg_L, bg_R;
     private DrawingView drawingView;
-    LockScreenDemo(DrawingView drawingView_) {
+    private Paint paint;
+
+    CameraDemo(DrawingView drawingView_) {
         drawingView = drawingView_;
+        paint = new Paint(Color.WHITE);
     }
 
     public void changeDisplay(boolean display_) {
@@ -27,11 +30,9 @@ public class LockScreenDemo {
     public void draw(Canvas canvas) {
         if (!display)
             return;
-        if (res.L > res.R + 0.2f)
-            canvas.drawBitmap(bg_L, 0, 0, drawingView.picPaint);
-        else if (res.R > res.L + 0.2f)
-            canvas.drawBitmap(bg_R, 0, 0, drawingView.picPaint);
+        if (res.U > res.D + 0.2f)
+            canvas.drawCircle(Common.screen_W / 2, 300, 100, paint);
         else
-            canvas.drawBitmap(bg_empty, 0, 0, drawingView.picPaint);
+            canvas.drawCircle(Common.screen_W / 2, Common.screen_H - 300, 100, paint);
     }
 }

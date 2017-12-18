@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.OrientationEventListener;
 import android.view.View;
@@ -100,11 +101,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            boolean quit = drawingView.onBackPressed();
+            if (!quit) {
+                findViewById(R.id.btn_lockScreen).setVisibility(View.VISIBLE);
+                return false;
+            }
+            else
+                return super.onKeyDown(keyCode, event);
+        }else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
+
     private View.OnClickListener onClickLockScreenListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Toast.makeText(MainActivity.this, "锁屏Demo", Toast.LENGTH_LONG).show();
-            drawingView.lockScreenDemo.changeDisplay();
+            drawingView.lockScreenDemo.changeDisplay(true);
+            findViewById(R.id.btn_lockScreen).setVisibility(View.INVISIBLE);
         }
     };
+
 }

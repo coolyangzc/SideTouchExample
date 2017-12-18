@@ -24,6 +24,7 @@ public class DrawingView extends View implements Runnable {
     private MainActivity activity;
     private HandPostureDetector hDetector;
     public LockScreenDemo lockScreenDemo;
+    public CameraDemo cameraDemo;
     int[][] capa = new int[6][Common.CapaNum_H]; //0~2: Left; 3~5: Right; 0~29: Up~Down
 
     public DrawingView(Context context, AttributeSet attrs) {
@@ -47,6 +48,8 @@ public class DrawingView extends View implements Runnable {
         lockScreenDemo.bg_empty = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_bg);
         lockScreenDemo.bg_L = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_l);
         lockScreenDemo.bg_R = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_r);
+
+        cameraDemo = new CameraDemo(this);
 
         //Start Thread
         Thread thread = new Thread(this);
@@ -73,6 +76,16 @@ public class DrawingView extends View implements Runnable {
             }
 
         lockScreenDemo.draw(canvas);
+    }
+
+    public boolean onBackPressed() {
+        boolean returnQuit = true;
+        if (lockScreenDemo.isDisplay() || cameraDemo.isDisplay()) {
+            lockScreenDemo.changeDisplay(false);
+            cameraDemo.changeDisplay(false);
+            returnQuit = false;
+        }
+        return returnQuit;
     }
 
     private String getString(String path) {
