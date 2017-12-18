@@ -1,9 +1,13 @@
 package pcg.yzc.sidetouchexample;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Canvas;
-import android.os.Message;
+import android.graphics.PaintFlagsDrawFilter;
+import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -16,21 +20,42 @@ import java.lang.StringBuilder;
 
 public class DrawingView extends View implements Runnable {
 
-    private Paint capaPaint = null;
+    public Paint capaPaint = null, picPaint = null;
     private MainActivity activity;
     private HandPostureDetector hDetector;
+    public LockScreenDemo lockScreenDemo;
     int[][] capa = new int[6][Common.CapaNum_H]; //0~2: Left; 3~5: Right; 0~29: Up~Down
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
         activity = (MainActivity) context;
-        capaPaint = new Paint();
         hDetector = new HandPostureDetector();
+        initialize();
+    }
+
+    private void initialize() {
+        //Setup Paints
+        capaPaint = new Paint();
         capaPaint.setStyle(Paint.Style.FILL);
+        picPaint = new Paint();
+        picPaint.setAntiAlias(true);
+        picPaint.setFilterBitmap(true);
+        picPaint.setColor(Color.WHITE);
+
+        //Load Resources
+        lockScreenDemo = new LockScreenDemo(this);
+        lockScreenDemo.bg_empty = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_bg);
+        lockScreenDemo.bg_L = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_l);
+        lockScreenDemo.bg_R = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_r);
+
+        //Start Thread
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));
         super.onDraw(canvas);
         for (int i = 0; i < 6; ++i)
             for (int j = 0; j < Common.CapaNum_H; ++j) {
@@ -46,11 +71,8 @@ public class DrawingView extends View implements Runnable {
                             Common.screen_W - Common.capa_W * (6 - i - 1), Common.capa_H * (j + 1),
                             capaPaint);
             }
-    }
 
-    public void initialize() {
-        Thread thread = new Thread(this);
-        thread.start();
+        lockScreenDemo.draw(canvas);
     }
 
     private String getString(String path) {
@@ -99,6 +121,7 @@ public class DrawingView extends View implements Runnable {
                 s = "右\n";
             s += String.valueOf(res) + "\n" + String.valueOf(frameCount);
             activity.update(s);
+            lockScreenDemo.update(res);
         }
     }
 }

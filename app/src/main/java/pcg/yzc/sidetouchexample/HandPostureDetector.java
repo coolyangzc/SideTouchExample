@@ -1,8 +1,14 @@
 package pcg.yzc.sidetouchexample;
 
+import android.os.SystemClock;
+
 public class HandPostureDetector {
     //int[][] capa = new int[6][Common.CapaNum_H]; //0~2: Left; 3~5: Right; 0~29: Up~Down
     final int L = 0, R = 5;
+
+    public HistoryValueContainer confidenceL = new HistoryValueContainer(2000, 0.01);
+    public HistoryValueContainer confidenceR = new HistoryValueContainer(2000, 0.01);
+
     public double predict(int[][] capa) {
         double confL = 0, confR = 0;
         int countL = 0, countR = 0, highestL = -1, highestR = -1;
@@ -23,13 +29,16 @@ public class HandPostureDetector {
         else if (countR > 0 && countL == 0)
             confR += 1;
         if (highestL >= 0 && highestR >= 0)
-            if (highestL <= 5 && highestR > 6)
+            if (highestL <= 6 && highestR > 7)
                 confL += 1;
-            else if (highestR <= 5 && highestL > 6)
+            else if (highestR <= 6 && highestL > 7)
                 confR += 1;
-        if (confL > confR)
+        long curTime = SystemClock.uptimeMillis();
+        confidenceL.update(confL, curTime);
+        confidenceR.update(confR, curTime);
+        if (confidenceL.getValue() > confidenceR.getValue() + 0.2f)
             return -1;
-        if (confL < confR)
+        if (confidenceL.getValue() + 0.2f < confidenceR.getValue())
             return 1;
         return 0;
     }

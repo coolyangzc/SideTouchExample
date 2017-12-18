@@ -1,5 +1,6 @@
 package pcg.yzc.sidetouchexample;
 
+import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.ConstraintLayout;
@@ -8,7 +9,10 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     DrawingView drawingView;
     static TextView textView_touchInfo, textView_resultInfo;
     public TextHandler textHandler = new TextHandler();
+
+    OrientationEventListener mOrientationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +40,19 @@ public class MainActivity extends AppCompatActivity {
         Common.capa_H = Common.screen_H / Common.CapaNum_H;
 
         drawingView = (DrawingView) findViewById(R.id.drawingView);
-        drawingView.initialize();
         textView_touchInfo = (TextView) findViewById(R.id.textView_touchInfo);
         textView_resultInfo = (TextView) findViewById(R.id.textView_resultInfo);
+        findViewById(R.id.btn_lockScreen).setOnClickListener(onClickLockScreenListener);
+
+        mOrientationListener = new OrientationEventListener(this,
+                SensorManager.SENSOR_DELAY_NORMAL) {
+
+            @Override
+            public void onOrientationChanged(int orientation) {
+                Log.d("ori", "Orientation changed to " + orientation);
+            }
+        };
+        mOrientationListener.enable();
     }
 
     @Override
@@ -83,4 +99,12 @@ public class MainActivity extends AppCompatActivity {
             textView_resultInfo.setText((String)msg.obj);
         }
     }
+
+    private View.OnClickListener onClickLockScreenListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(MainActivity.this, "锁屏Demo", Toast.LENGTH_LONG).show();
+            drawingView.lockScreenDemo.changeDisplay();
+        }
+    };
 }
