@@ -9,7 +9,7 @@
 
     <pcg.yzc.sidetouchexample.DrawingView
         android:id="@+id/drawingView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible" />
 
@@ -39,19 +39,23 @@
         android:id="@+id/btn_lockScreen"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Lock Screen"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_camera"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="68dp" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_lockScreen" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"

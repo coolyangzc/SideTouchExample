@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.OrientationEventListener;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     DrawingView drawingView;
     static TextView textView_touchInfo, textView_resultInfo;
+    private Button btn_lockScreen, btn_camera;
     public TextHandler textHandler = new TextHandler();
 
     OrientationEventListener mOrientationListener;
@@ -43,7 +45,11 @@ public class MainActivity extends AppCompatActivity {
         drawingView = (DrawingView) findViewById(R.id.drawingView);
         textView_touchInfo = (TextView) findViewById(R.id.textView_touchInfo);
         textView_resultInfo = (TextView) findViewById(R.id.textView_resultInfo);
-        findViewById(R.id.btn_lockScreen).setOnClickListener(onClickLockScreenListener);
+        btn_lockScreen = findViewById(R.id.btn_lockScreen);
+        btn_lockScreen.setOnClickListener(onClickListener);
+
+        btn_camera = findViewById(R.id.btn_camera);
+        btn_camera.setOnClickListener(onClickListener);
 
         mOrientationListener = new OrientationEventListener(this,
                 SensorManager.SENSOR_DELAY_NORMAL) {
@@ -106,7 +112,8 @@ public class MainActivity extends AppCompatActivity {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             boolean quit = drawingView.onBackPressed();
             if (!quit) {
-                findViewById(R.id.btn_lockScreen).setVisibility(View.VISIBLE);
+                btn_lockScreen.setVisibility(View.VISIBLE);
+                btn_camera.setVisibility(View.VISIBLE);
                 return false;
             }
             else
@@ -116,12 +123,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private View.OnClickListener onClickLockScreenListener = new View.OnClickListener() {
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(MainActivity.this, "锁屏Demo", Toast.LENGTH_LONG).show();
-            drawingView.lockScreenDemo.changeDisplay(true);
-            findViewById(R.id.btn_lockScreen).setVisibility(View.INVISIBLE);
+            if (v.getId() == R.id.btn_lockScreen) {
+                Toast.makeText(MainActivity.this, "锁屏Demo", Toast.LENGTH_LONG).show();
+                drawingView.lockScreenDemo.changeDisplay(true);
+            } else if (v.getId() == R.id.btn_camera) {
+                Toast.makeText(MainActivity.this, "相机Demo", Toast.LENGTH_LONG).show();
+                drawingView.cameraDemo.changeDisplay(true);
+            }
+            btn_lockScreen.setVisibility(View.INVISIBLE);
+            btn_camera.setVisibility(View.INVISIBLE);
         }
     };
 

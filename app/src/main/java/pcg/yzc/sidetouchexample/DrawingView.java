@@ -76,6 +76,7 @@ public class DrawingView extends View implements Runnable {
             }
 
         lockScreenDemo.draw(canvas);
+        cameraDemo.draw(canvas);
     }
 
     public boolean onBackPressed() {
@@ -138,6 +139,7 @@ public class DrawingView extends View implements Runnable {
             s += String.format("%.1f %.1f %.1f %.1f\n", res.L, res.R, res.U, res.D);
             activity.update(s);
             lockScreenDemo.update(res);
+            cameraDemo.update(res);
         }
     }
 }
