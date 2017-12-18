@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
             if (!quit) {
                 btn_lockScreen.setVisibility(View.VISIBLE);
                 btn_camera.setVisibility(View.VISIBLE);
+                textView_touchInfo.setVisibility(View.VISIBLE);
                 return false;
             }
             else
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
             }
             btn_lockScreen.setVisibility(View.INVISIBLE);
             btn_camera.setVisibility(View.INVISIBLE);
+            textView_touchInfo.setVisibility(View.INVISIBLE);
         }
     };
 

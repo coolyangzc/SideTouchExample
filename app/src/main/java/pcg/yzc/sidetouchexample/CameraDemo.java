@@ -33,9 +33,9 @@ public class CameraDemo {
     public void draw(Canvas canvas) {
         if (!display)
             return;
-        if (res.U > res.D + 0.2f)
-            canvas.drawCircle(Common.screen_W / 2, 200, 200, paint);
+        if (res.U > res.D + 0.1f)
+            canvas.drawCircle(Common.screen_W / 2, 400, 160, paint);
         else
-            canvas.drawCircle(Common.screen_W / 2, Common.screen_H - 200, 200, paint);
+            canvas.drawCircle(Common.screen_W / 2, Common.screen_H - 250, 160, paint);
     }
 }
