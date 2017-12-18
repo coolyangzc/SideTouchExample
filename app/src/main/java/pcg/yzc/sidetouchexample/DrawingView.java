@@ -113,13 +113,16 @@ public class DrawingView extends View implements Runnable {
                 Log.d("frame", "frame = " + frameCount + ", frame rate = "
                         + (frameCount * 1000 / (System.currentTimeMillis() - startTime)));
 
-            double res = hDetector.predict(capa);
+            HandPostureResult res = hDetector.predict(capa);
             String s = "空\n";
-            if (res < 0)
+
+            if (res.L > res.R + 0.2f)
                 s = "左\n";
-            if (res > 0)
+            else if (res.R > res.L + 0.2f)
                 s = "右\n";
-            s += String.valueOf(res) + "\n" + String.valueOf(frameCount);
+            else
+                s = "无\n";
+            s += String.format("%.1f %.1f %.1f %.1f\n", res.L, res.R, res.U, res.D);
             activity.update(s);
             lockScreenDemo.update(res);
         }

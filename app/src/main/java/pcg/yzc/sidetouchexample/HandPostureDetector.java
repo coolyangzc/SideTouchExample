@@ -9,7 +9,9 @@ public class HandPostureDetector {
     public HistoryValueContainer confidenceL = new HistoryValueContainer(2000, 0.01);
     public HistoryValueContainer confidenceR = new HistoryValueContainer(2000, 0.01);
 
-    public double predict(int[][] capa) {
+    private HandPostureResult res = new HandPostureResult();
+
+    public HandPostureResult predict(int[][] capa) {
         double confL = 0, confR = 0;
         int countL = 0, countR = 0, highestL = -1, highestR = -1;
         for (int j = 0; j < Common.CapaNum_H; j++) {
@@ -36,10 +38,8 @@ public class HandPostureDetector {
         long curTime = SystemClock.uptimeMillis();
         confidenceL.update(confL, curTime);
         confidenceR.update(confR, curTime);
-        if (confidenceL.getValue() > confidenceR.getValue() + 0.2f)
-            return -1;
-        if (confidenceL.getValue() + 0.2f < confidenceR.getValue())
-            return 1;
-        return 0;
+        res.L = confidenceL.getValue();
+        res.R = confidenceR.getValue();
+        return res;
     }
 }

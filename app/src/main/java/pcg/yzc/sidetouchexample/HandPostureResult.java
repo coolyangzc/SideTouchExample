@@ -1,6 +1,5 @@
 package pcg.yzc.sidetouchexample;
 
 public class HandPostureResult {
-    public double[] res = new double[4];
-
+    public double L, R, U, D;
 }
