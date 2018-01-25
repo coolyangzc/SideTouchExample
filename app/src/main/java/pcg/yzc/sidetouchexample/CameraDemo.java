@@ -12,10 +12,11 @@ public class CameraDemo {
 
     CameraDemo(DrawingView drawingView_) {
         drawingView = drawingView_;
-        paint = new Paint(Color.BLACK);
+        paint = new Paint();
+        paint.setColor(Color.WHITE);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(10);
+        paint.setStrokeWidth(20);
     }
 
     public void changeDisplay(boolean display_) {
@@ -34,8 +35,8 @@ public class CameraDemo {
         if (!display)
             return;
         if (res.U > res.D + 0.1f)
-            canvas.drawCircle(Common.screen_W / 2, 400, 160, paint);
+            canvas.drawCircle(Common.screen_W / 2, 400, 150, paint);
         else
-            canvas.drawCircle(Common.screen_W / 2, Common.screen_H - 250, 160, paint);
+            canvas.drawCircle(Common.screen_W / 2, Common.screen_H - 350, 150, paint);
     }
 }

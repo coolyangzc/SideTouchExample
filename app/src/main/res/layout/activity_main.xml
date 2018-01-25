@@ -7,6 +7,12 @@
     android:background="@color/white"
     tools:context="pcg.yzc.sidetouchexample.MainActivity">
 
+    <SurfaceView
+        android:id="@+id/surfaceView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"/>
+
     <pcg.yzc.sidetouchexample.DrawingView
         android:id="@+id/drawingView"
         android:layout_width="match_parent"
@@ -70,5 +76,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="20dp" />
+
 
 </android.support.constraint.ConstraintLayout>

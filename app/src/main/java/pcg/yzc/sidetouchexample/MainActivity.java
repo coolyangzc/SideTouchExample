@@ -1,9 +1,11 @@
 package pcg.yzc.sidetouchexample;
 
+import android.Manifest;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.OrientationEventListener;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     static TextView textView_touchInfo, textView_resultInfo;
     private Button btn_lockScreen, btn_camera;
     public TextHandler textHandler = new TextHandler();
+    SurfaceView surfaceView;
+    CameraView cameraView;
 
     OrientationEventListener mOrientationListener;
 
@@ -50,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
         btn_camera = findViewById(R.id.btn_camera);
         btn_camera.setOnClickListener(onClickListener);
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                1);
+
+        surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
+        cameraView = new CameraView(surfaceView);
 
         mOrientationListener = new OrientationEventListener(this,
                 SensorManager.SENSOR_DELAY_NORMAL) {
@@ -115,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 btn_lockScreen.setVisibility(View.VISIBLE);
                 btn_camera.setVisibility(View.VISIBLE);
                 textView_touchInfo.setVisibility(View.VISIBLE);
+                surfaceView.setVisibility(View.INVISIBLE);
                 return false;
             }
             else
@@ -128,11 +141,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.btn_lockScreen) {
-                Toast.makeText(MainActivity.this, "锁屏Demo", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "锁屏Demo", Toast.LENGTH_SHORT).show();
                 drawingView.lockScreenDemo.changeDisplay(true);
             } else if (v.getId() == R.id.btn_camera) {
-                Toast.makeText(MainActivity.this, "相机Demo", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "相机Demo", Toast.LENGTH_SHORT).show();
                 drawingView.cameraDemo.changeDisplay(true);
+                surfaceView.setVisibility(View.VISIBLE);
             }
             btn_lockScreen.setVisibility(View.INVISIBLE);
             btn_camera.setVisibility(View.INVISIBLE);

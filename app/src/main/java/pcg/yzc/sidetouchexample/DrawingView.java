@@ -60,21 +60,21 @@ public class DrawingView extends View implements Runnable {
     protected void onDraw(Canvas canvas) {
         canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));
         super.onDraw(canvas);
-        for (int i = 0; i < 6; ++i)
-            for (int j = 0; j < Common.CapaNum_H; ++j) {
-                if (capa[i][j] > 0)
-                    capaPaint.setColor(Color.argb(capa[i][j],255, 0, 0));
-                else
-                    capaPaint.setColor(Color.WHITE);
-                if (i < 3)
-                    canvas.drawRect(Common.capa_W * i, Common.capa_H * j,
-                            Common.capa_W * (i + 1), Common.capa_H * (j + 1), capaPaint);
-                else
-                    canvas.drawRect(Common.screen_W - Common.capa_W * (6 - i), Common.capa_H * j,
-                            Common.screen_W - Common.capa_W * (6 - i - 1), Common.capa_H * (j + 1),
-                            capaPaint);
-            }
-
+        if (!cameraDemo.isDisplay())
+            for (int i = 0; i < 6; ++i)
+                for (int j = 0; j < Common.CapaNum_H; ++j) {
+                    if (capa[i][j] > 0)
+                        capaPaint.setColor(Color.argb(capa[i][j],255, 0, 0));
+                    else
+                        capaPaint.setColor(Color.WHITE);
+                    if (i < 3)
+                        canvas.drawRect(Common.capa_W * i, Common.capa_H * j,
+                                Common.capa_W * (i + 1), Common.capa_H * (j + 1), capaPaint);
+                    else
+                        canvas.drawRect(Common.screen_W - Common.capa_W * (6 - i), Common.capa_H * j,
+                                Common.screen_W - Common.capa_W * (6 - i - 1), Common.capa_H * (j + 1),
+                                capaPaint);
+                }
         lockScreenDemo.draw(canvas);
         cameraDemo.draw(canvas);
     }
