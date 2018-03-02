@@ -28,8 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     DrawingView drawingView;
     static TextView textView_touchInfo, textView_resultInfo;
-    private ArrayList<Button> btns;
-    private Button btn_lockScreen, btn_camera;
+    private ArrayList<Button> btns = new ArrayList<Button>();
     public TextHandler textHandler = new TextHandler();
     SurfaceView surfaceView;
     CameraView cameraView;
@@ -55,12 +54,13 @@ public class MainActivity extends AppCompatActivity {
 
         Button btn_lockScreen = findViewById(R.id.btn_lockScreen);
         Button btn_camera = findViewById(R.id.btn_camera);
+        Button btn_clock = findViewById(R.id.btn_clock);
         btns.add(btn_lockScreen);
         btns.add(btn_camera);
+        btns.add(btn_clock);
 
-        btn_lockScreen.setOnClickListener(onClickListener);
-
-        btn_camera.setOnClickListener(onClickListener);
+        for(Button btn:btns)
+            btn.setOnClickListener(onClickListener);
 
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -130,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             boolean quit = drawingView.onBackPressed();
             if (!quit) {
-                btn_lockScreen.setVisibility(View.VISIBLE);
-                btn_camera.setVisibility(View.VISIBLE);
+                for (Button btn:btns)
+                    btn.setVisibility(View.VISIBLE);
 
                 textView_touchInfo.setVisibility(View.VISIBLE);
                 surfaceView.setVisibility(View.INVISIBLE);
@@ -156,10 +156,10 @@ public class MainActivity extends AppCompatActivity {
                 surfaceView.setVisibility(View.VISIBLE);
             } else if (v.getId() == R.id.btn_clock) {
                 Toast.makeText(MainActivity.this, "闹铃Demo", Toast.LENGTH_SHORT).show();
-
+                drawingView.cameraDemo.changeDisplay(true);
             }
-            btn_lockScreen.setVisibility(View.INVISIBLE);
-            btn_camera.setVisibility(View.INVISIBLE);
+            for (Button btn:btns)
+                btn.setVisibility(View.INVISIBLE);
             textView_touchInfo.setVisibility(View.INVISIBLE);
         }
     };

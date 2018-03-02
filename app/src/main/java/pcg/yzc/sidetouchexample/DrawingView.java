@@ -17,14 +17,19 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.StringBuilder;
+import java.util.ArrayList;
 
 public class DrawingView extends View implements Runnable {
 
     public Paint capaPaint = null, picPaint = null;
     private MainActivity activity;
     private HandPostureDetector hDetector;
+    public ArrayList<AbstractDemo> demos = new ArrayList<AbstractDemo>();
+
     public LockScreenDemo lockScreenDemo;
     public CameraDemo cameraDemo;
+    public ClockDemo clockDemo;
+
     int[][] capa = new int[6][Common.CapaNum_H]; //0~2: Left; 3~5: Right; 0~29: Up~Down
 
     public DrawingView(Context context, AttributeSet attrs) {
@@ -50,6 +55,11 @@ public class DrawingView extends View implements Runnable {
         lockScreenDemo.bg_R = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_r);
 
         cameraDemo = new CameraDemo(this);
+        clockDemo = new ClockDemo(this);
+
+        demos.add(lockScreenDemo);
+        demos.add(cameraDemo);
+        demos.add(clockDemo);
 
         //Start Thread
         Thread thread = new Thread(this);
@@ -75,17 +85,20 @@ public class DrawingView extends View implements Runnable {
                                 Common.screen_W - Common.capa_W * (6 - i - 1), Common.capa_H * (j + 1),
                                 capaPaint);
                 }
-        lockScreenDemo.draw(canvas);
-        cameraDemo.draw(canvas);
+        for(AbstractDemo demo:demos)
+            demo.draw(canvas);
     }
 
     public boolean onBackPressed() {
         boolean returnQuit = true;
-        if (lockScreenDemo.isDisplay() || cameraDemo.isDisplay()) {
-            lockScreenDemo.changeDisplay(false);
-            cameraDemo.changeDisplay(false);
-            returnQuit = false;
-        }
+        for (AbstractDemo demo:demos)
+            if (demo.isDisplay()) {
+                returnQuit = false;
+                break;
+            }
+        if (!returnQuit)
+            for (AbstractDemo demo:demos)
+                demo.changeDisplay(false);
         return returnQuit;
     }
 
@@ -138,8 +151,8 @@ public class DrawingView extends View implements Runnable {
                 s = "无\n";
             s += String.format("%.1f %.1f %.1f %.1f\n", res.L, res.R, res.U, res.D);
             activity.update(s);
-            lockScreenDemo.update(res);
-            cameraDemo.update(res);
+            for(AbstractDemo demo:demos)
+                demo.update(res);
         }
     }
 }
