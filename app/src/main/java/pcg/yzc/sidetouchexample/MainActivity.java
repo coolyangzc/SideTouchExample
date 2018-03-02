@@ -22,11 +22,13 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     DrawingView drawingView;
     static TextView textView_touchInfo, textView_resultInfo;
+    private ArrayList<Button> btns;
     private Button btn_lockScreen, btn_camera;
     public TextHandler textHandler = new TextHandler();
     SurfaceView surfaceView;
@@ -50,10 +52,14 @@ public class MainActivity extends AppCompatActivity {
         drawingView = (DrawingView) findViewById(R.id.drawingView);
         textView_touchInfo = (TextView) findViewById(R.id.textView_touchInfo);
         textView_resultInfo = (TextView) findViewById(R.id.textView_resultInfo);
-        btn_lockScreen = findViewById(R.id.btn_lockScreen);
+
+        Button btn_lockScreen = findViewById(R.id.btn_lockScreen);
+        Button btn_camera = findViewById(R.id.btn_camera);
+        btns.add(btn_lockScreen);
+        btns.add(btn_camera);
+
         btn_lockScreen.setOnClickListener(onClickListener);
 
-        btn_camera = findViewById(R.id.btn_camera);
         btn_camera.setOnClickListener(onClickListener);
 
         ActivityCompat.requestPermissions(this,
@@ -126,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
             if (!quit) {
                 btn_lockScreen.setVisibility(View.VISIBLE);
                 btn_camera.setVisibility(View.VISIBLE);
+
                 textView_touchInfo.setVisibility(View.VISIBLE);
                 surfaceView.setVisibility(View.INVISIBLE);
                 return false;
@@ -147,11 +154,13 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "相机Demo", Toast.LENGTH_SHORT).show();
                 drawingView.cameraDemo.changeDisplay(true);
                 surfaceView.setVisibility(View.VISIBLE);
+            } else if (v.getId() == R.id.btn_clock) {
+                Toast.makeText(MainActivity.this, "闹铃Demo", Toast.LENGTH_SHORT).show();
+
             }
             btn_lockScreen.setVisibility(View.INVISIBLE);
             btn_camera.setVisibility(View.INVISIBLE);
             textView_touchInfo.setVisibility(View.INVISIBLE);
         }
     };
-
 }

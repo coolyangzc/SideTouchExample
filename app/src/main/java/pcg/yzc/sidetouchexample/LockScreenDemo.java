@@ -3,25 +3,12 @@ package pcg.yzc.sidetouchexample;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-public class LockScreenDemo {
-    private boolean display;
-    private HandPostureResult res;
+public class LockScreenDemo extends AbstractDemo {
     public Bitmap bg_empty, bg_L, bg_R;
     private DrawingView drawingView;
     LockScreenDemo(DrawingView drawingView_) {
+        super();
         drawingView = drawingView_;
-    }
-
-    public void changeDisplay(boolean display_) {
-        display = display_;
-    }
-
-    public boolean isDisplay() {
-        return display;
-    }
-
-    public void update(HandPostureResult res_) {
-        res = res_;
     }
 
     public void draw(Canvas canvas) {

@@ -4,31 +4,18 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class CameraDemo {
-    private boolean display;
-    private HandPostureResult res;
+public class CameraDemo extends AbstractDemo {
     private DrawingView drawingView;
     private Paint paint;
 
     CameraDemo(DrawingView drawingView_) {
+        super();
         drawingView = drawingView_;
         paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(20);
-    }
-
-    public void changeDisplay(boolean display_) {
-        display = display_;
-    }
-
-    public boolean isDisplay() {
-        return display;
-    }
-
-    public void update(HandPostureResult res_) {
-        res = res_;
     }
 
     public void draw(Canvas canvas) {
