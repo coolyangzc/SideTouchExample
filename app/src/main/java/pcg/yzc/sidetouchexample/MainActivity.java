@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                 surfaceView.setVisibility(View.VISIBLE);
             } else if (v.getId() == R.id.btn_clock) {
                 Toast.makeText(MainActivity.this, "闹铃Demo", Toast.LENGTH_SHORT).show();
-                drawingView.cameraDemo.changeDisplay(true);
+                drawingView.clockDemo.changeDisplay(true);
             }
             for (Button btn:btns)
                 btn.setVisibility(View.INVISIBLE);
