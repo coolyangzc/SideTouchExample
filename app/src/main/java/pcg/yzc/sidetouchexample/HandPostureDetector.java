@@ -65,6 +65,11 @@ public class HandPostureDetector {
         res.R = confidenceR.getValue();
         res.U = confidenceU.getValue();
         res.D = confidenceD.getValue();
+
+        if (countL >= 5 && countR >= 5 && force >= 500)
+            res.grip = true;
+        else
+            res.grip = false;
         return res;
     }
 }

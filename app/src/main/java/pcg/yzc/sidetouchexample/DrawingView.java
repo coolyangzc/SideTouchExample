@@ -50,12 +50,16 @@ public class DrawingView extends View implements Runnable {
 
         //Load Resources
         lockScreenDemo = new LockScreenDemo(this);
+        cameraDemo = new CameraDemo(this);
+        clockDemo = new ClockDemo(this);
+
         lockScreenDemo.bg_empty = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_bg);
         lockScreenDemo.bg_L = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_l);
         lockScreenDemo.bg_R = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_r);
 
-        cameraDemo = new CameraDemo(this);
-        clockDemo = new ClockDemo(this);
+        clockDemo.bg_clock = BitmapFactory.decodeResource(getResources(), R.mipmap.clock);
+
+
 
         demos.add(lockScreenDemo);
         demos.add(cameraDemo);
