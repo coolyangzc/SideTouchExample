@@ -24,6 +24,7 @@ public class DrawingView extends View implements Runnable {
     public Paint capaPaint = null, picPaint = null;
     private MainActivity activity;
     private HandPostureDetector hDetector;
+    private Context ctx;
     public ArrayList<AbstractDemo> demos = new ArrayList<AbstractDemo>();
 
     public LockScreenDemo lockScreenDemo;
@@ -34,6 +35,7 @@ public class DrawingView extends View implements Runnable {
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        ctx = context;
         activity = (MainActivity) context;
         hDetector = new HandPostureDetector();
         initialize();
@@ -51,15 +53,13 @@ public class DrawingView extends View implements Runnable {
         //Load Resources
         lockScreenDemo = new LockScreenDemo(this);
         cameraDemo = new CameraDemo(this);
-        clockDemo = new ClockDemo(this);
+        clockDemo = new ClockDemo(this, ctx);
 
         lockScreenDemo.bg_empty = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_bg);
         lockScreenDemo.bg_L = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_l);
         lockScreenDemo.bg_R = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_r);
 
         clockDemo.bg_clock = BitmapFactory.decodeResource(getResources(), R.mipmap.clock);
-
-
 
         demos.add(lockScreenDemo);
         demos.add(cameraDemo);
