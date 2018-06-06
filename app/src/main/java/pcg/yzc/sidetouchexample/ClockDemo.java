@@ -12,7 +12,7 @@ import android.widget.Toast;
 public class ClockDemo extends AbstractDemo{
     private DrawingView drawingView;
     private Paint paint;
-    private long lastTime;
+    private long lastTime, curTime;
     private boolean ringing;
     private Context ctx;
     public Bitmap bg_clock;
@@ -34,7 +34,7 @@ public class ClockDemo extends AbstractDemo{
             return;
         canvas.drawText("Grip:" + Boolean.toString(res.grip), Common.screen_W / 2 - 200, 400, paint);
 
-        long curTime = SystemClock.uptimeMillis();
+        curTime = SystemClock.uptimeMillis();
         if (ringing){
             if (res.grip) {
                 ringing = false;

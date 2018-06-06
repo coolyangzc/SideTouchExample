@@ -14,7 +14,7 @@ public class HandPostureDetector {
 
     private HandPostureResult res = new HandPostureResult();
 
-    private double[] conf = new double[6];
+    private double[] conf = new double[6], highest_gravity = new double[6];
     private int[] count = new int[6], highest = new int[6],
             discrete = new int[6], low_discrete = new int[6],
             lowest_len = new int[6];
@@ -46,14 +46,37 @@ public class HandPostureDetector {
                             low_discrete[i]++;
                     }
                     lowest_len[i] = j - up + 1;
-                    gravity += j * capa[L][j];
-                    force += capa[L][j];
+                    gravity += j * capa[i][j];
+                    force += capa[i][j];
                 } else {
                     connected[i] = false;
                     up = -1;
                 }
             }
         }
+
+        for(int i : D) {
+            double high_g = 0, high_f = 0;
+            boolean begin = false;
+            for (int j = 0; j < Common.CapaNum_H; j++) {
+                if (capa[i][j] > 10) {
+                    begin = true;
+                    high_g += j * capa[i][j];
+                    high_f += capa[i][j];
+                } else {
+                    if (j <= 1)
+                        high_g = high_f = 0;
+                    else if (begin)
+                        break;
+                }
+            }
+            if (high_f >= 20)
+                highest_gravity[i] = high_g / high_f;
+            else
+                highest_gravity[i] = -1;
+        }
+        res.highest_gravity[0] = highest_gravity[L];
+        res.highest_gravity[1] = highest_gravity[R];
 
         for (int p : D) {
             int q = 5 - p;

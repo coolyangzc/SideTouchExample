@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     DrawingView drawingView;
     static TextView textView_touchInfo, textView_resultInfo;
     private ArrayList<Button> btns = new ArrayList<Button>();
-    public boolean debug_info = true;
+    public boolean debug_info = false;
     public TextHandler textHandler = new TextHandler();
     SurfaceView surfaceView;
     CameraView cameraView;

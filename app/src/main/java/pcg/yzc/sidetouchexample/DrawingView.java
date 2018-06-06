@@ -63,7 +63,7 @@ public class DrawingView extends View implements Runnable {
 
         clockDemo.bg_clock = BitmapFactory.decodeResource(getResources(), R.mipmap.clock);
 
-        movingScreenDemo.bg = BitmapFactory.decodeResource(getResources(), R.mipmap.icons);
+        movingScreenDemo.bg = BitmapFactory.decodeResource(getResources(), R.mipmap.icons_bg);
 
         demos.add(lockScreenDemo);
         demos.add(cameraDemo);
@@ -162,6 +162,7 @@ public class DrawingView extends View implements Runnable {
                 s += String.format("%.1f %.1f %.1f %.1f\n", res.L, res.R, res.U, res.D);
                 s += String.format("%d %d\n", res.discrete_L, res.discrete_R);
                 s += String.format("%d %d\n", res.lowest_L, res.lowest_R);
+                s += String.format("%.2f %.2f\n", res.highest_gravity[0], res.highest_gravity[1]);
             }
             activity.update(s);
             for(AbstractDemo demo:demos)

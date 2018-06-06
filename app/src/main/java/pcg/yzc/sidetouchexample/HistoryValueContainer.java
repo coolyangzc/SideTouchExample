@@ -7,7 +7,7 @@ public class HistoryValueContainer {
 
     public double value = 0;
 
-    public Queue<Double> values = new LinkedList<Double>();
+    private Queue<Double> values = new LinkedList<Double>();
     private Queue<Double> timestamps = new LinkedList<Double>();
 
     private double ms, lowWeight;
