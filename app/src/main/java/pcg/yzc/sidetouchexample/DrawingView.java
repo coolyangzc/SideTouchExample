@@ -153,9 +153,11 @@ public class DrawingView extends View implements Runnable {
                 s = "右\n";
             else
                 s = "无\n";
-            s += String.format("%.1f %.1f %.1f %.1f\n", res.L, res.R, res.U, res.D);
-            s += String.format("%d %d\n", res.discrete_L, res.discrete_R);
-            s += String.format("%d %d\n", res.lowest_L, res.lowest_R);
+            if (activity.debug_info) {
+                s += String.format("%.1f %.1f %.1f %.1f\n", res.L, res.R, res.U, res.D);
+                s += String.format("%d %d\n", res.discrete_L, res.discrete_R);
+                s += String.format("%d %d\n", res.lowest_L, res.lowest_R);
+            }
             activity.update(s);
             for(AbstractDemo demo:demos)
                 demo.update(res);

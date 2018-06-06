@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     DrawingView drawingView;
     static TextView textView_touchInfo, textView_resultInfo;
     private ArrayList<Button> btns = new ArrayList<Button>();
+    public boolean debug_info = true;
     public TextHandler textHandler = new TextHandler();
     SurfaceView surfaceView;
     CameraView cameraView;
@@ -49,12 +50,15 @@ public class MainActivity extends AppCompatActivity {
         textView_touchInfo = (TextView) findViewById(R.id.textView_touchInfo);
         textView_resultInfo = (TextView) findViewById(R.id.textView_resultInfo);
 
+        Button btn_debug = findViewById(R.id.btn_debug);
         Button btn_lockScreen = findViewById(R.id.btn_lockScreen);
         Button btn_camera = findViewById(R.id.btn_camera);
         Button btn_clock = findViewById(R.id.btn_clock);
+        btns.add(btn_debug);
         btns.add(btn_lockScreen);
         btns.add(btn_camera);
         btns.add(btn_clock);
+
 
         for(Button btn:btns)
             btn.setOnClickListener(onClickListener);
@@ -87,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
             int type = getType(event, i);
             text += "Id:" + id + " X:" + x + " Y:" + y + " Type:" + type + "\n";
         }
+        if (!debug_info)
+            text = "";
         textView_touchInfo.setText(text);
         if (event.getAction() == MotionEvent.ACTION_UP)
             textView_touchInfo.setText("");
@@ -129,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
             if (!quit) {
                 for (Button btn:btns)
                     btn.setVisibility(View.VISIBLE);
-
                 textView_touchInfo.setVisibility(View.VISIBLE);
                 surfaceView.setVisibility(View.INVISIBLE);
                 return false;
@@ -144,6 +149,10 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (v.getId() == R.id.btn_debug) {
+                debug_info ^= true;
+                return;
+            }
             if (v.getId() == R.id.btn_lockScreen) {
                 Toast.makeText(MainActivity.this, "锁屏Demo", Toast.LENGTH_SHORT).show();
                 drawingView.lockScreenDemo.changeDisplay(true);
