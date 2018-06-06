@@ -54,11 +54,12 @@ public class MainActivity extends AppCompatActivity {
         Button btn_lockScreen = findViewById(R.id.btn_lockScreen);
         Button btn_camera = findViewById(R.id.btn_camera);
         Button btn_clock = findViewById(R.id.btn_clock);
+        Button btn_movingScreen = findViewById(R.id.btn_movingScreen);
         btns.add(btn_debug);
         btns.add(btn_lockScreen);
         btns.add(btn_camera);
         btns.add(btn_clock);
-
+        btns.add(btn_movingScreen);
 
         for(Button btn:btns)
             btn.setOnClickListener(onClickListener);
@@ -163,6 +164,9 @@ public class MainActivity extends AppCompatActivity {
             } else if (v.getId() == R.id.btn_clock) {
                 Toast.makeText(MainActivity.this, "闹铃Demo", Toast.LENGTH_SHORT).show();
                 drawingView.clockDemo.changeDisplay(true);
+            } else if (v.getId() == R.id.btn_movingScreen) {
+                Toast.makeText(MainActivity.this,"移屏Demo", Toast.LENGTH_SHORT).show();
+                drawingView.movingScreenDemo.changeDisplay(true);
             }
             for (Button btn:btns)
                 btn.setVisibility(View.INVISIBLE);

@@ -34,7 +34,7 @@
         android:id="@+id/textView_touchInfo"
         android:layout_width="395dp"
         android:layout_height="202dp"
-        android:layout_marginTop="204dp"
+        android:layout_marginTop="260dp"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,8 +74,19 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_camera" />
 
     <Button
-        android:id="@+id/btn_debug"
+        android:id="@+id/btn_movingScreen"
         android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="MovingScreen"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_clock" />
+
+    <Button
+        android:id="@+id/btn_debug"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:text="Debug Info"

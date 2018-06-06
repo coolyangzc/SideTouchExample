@@ -30,8 +30,9 @@ public class DrawingView extends View implements Runnable {
     public LockScreenDemo lockScreenDemo;
     public CameraDemo cameraDemo;
     public ClockDemo clockDemo;
+    public MovingScreenDemo movingScreenDemo;
 
-    int[][] capa = new int[6][Common.CapaNum_H]; //0~2: Left; 3~5: Right; 0~29: Up~Down
+    public int[][] capa = new int[6][Common.CapaNum_H]; //0~2: Left; 3~5: Right; 0~29: Up~Down
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -54,6 +55,7 @@ public class DrawingView extends View implements Runnable {
         lockScreenDemo = new LockScreenDemo(this);
         cameraDemo = new CameraDemo(this);
         clockDemo = new ClockDemo(this, ctx);
+        movingScreenDemo = new MovingScreenDemo(this);
 
         lockScreenDemo.bg_empty = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_bg);
         lockScreenDemo.bg_L = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_l);
@@ -61,9 +63,12 @@ public class DrawingView extends View implements Runnable {
 
         clockDemo.bg_clock = BitmapFactory.decodeResource(getResources(), R.mipmap.clock);
 
+        movingScreenDemo.bg = BitmapFactory.decodeResource(getResources(), R.mipmap.icons);
+
         demos.add(lockScreenDemo);
         demos.add(cameraDemo);
         demos.add(clockDemo);
+        demos.add(movingScreenDemo);
 
         //Start Thread
         Thread thread = new Thread(this);
@@ -74,13 +79,15 @@ public class DrawingView extends View implements Runnable {
     protected void onDraw(Canvas canvas) {
         canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));
         super.onDraw(canvas);
+        for(AbstractDemo demo:demos)
+            demo.draw(canvas);
         if (!cameraDemo.isDisplay())
             for (int i = 0; i < 6; ++i)
                 for (int j = 0; j < Common.CapaNum_H; ++j) {
                     if (capa[i][j] > 0)
                         capaPaint.setColor(Color.argb(capa[i][j],255, 0, 0));
                     else
-                        capaPaint.setColor(Color.WHITE);
+                        capaPaint.setColor(Color.argb(0, 0, 0, 0));
                     if (i < 3)
                         canvas.drawRect(Common.capa_W * i, Common.capa_H * j,
                                 Common.capa_W * (i + 1), Common.capa_H * (j + 1), capaPaint);
@@ -89,8 +96,6 @@ public class DrawingView extends View implements Runnable {
                                 Common.screen_W - Common.capa_W * (6 - i - 1), Common.capa_H * (j + 1),
                                 capaPaint);
                 }
-        for(AbstractDemo demo:demos)
-            demo.draw(canvas);
     }
 
     public boolean onBackPressed() {
