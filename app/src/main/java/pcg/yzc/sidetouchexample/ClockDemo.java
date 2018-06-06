@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.widget.Toast;
 
 public class ClockDemo extends AbstractDemo{
@@ -39,6 +40,8 @@ public class ClockDemo extends AbstractDemo{
                 ringing = false;
                 Toast.makeText(ctx, "闹铃已关闭\n闹铃将在5s后重新响起", Toast.LENGTH_SHORT).show();
                 lastTime = curTime;
+                Vibrator vibrator = (Vibrator)ctx.getSystemService(ctx.VIBRATOR_SERVICE);
+                vibrator.vibrate(300);
             }
             if ((curTime - lastTime) / 500 % 2 == 0)
                 canvas.drawBitmap(bg_clock, Common.screen_W / 2 - 100, 600, drawingView.picPaint);
