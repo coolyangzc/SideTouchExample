@@ -3,7 +3,6 @@ package pcg.yzc.sidetouchexample;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.SystemClock;
-import android.util.Log;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -15,7 +14,7 @@ public class MovingScreenDemo extends AbstractDemo {
 
     private Queue<Double>[] pos = new Queue[2];
     private Queue<Long>[] timestamps = new Queue[2];
-    private int moving_edge = -1, last_edge = -1;
+    private int moving_edge = -1, moving_dir = -1, last_edge = -1, last_dir = -1;
     private double delta = 0, screen_pos = 0, smooth_result = 0;
     private double[] begin_pos = new double[2], last_pos = new double[2];
     private final int[] D = {0, 1};
@@ -30,22 +29,43 @@ public class MovingScreenDemo extends AbstractDemo {
         }
     }
 
+    private double trimPos(double pos) {
+        if (moving_dir == 1) {
+            pos = Math.max(0, pos);
+            pos = Math.min(500, pos);
+        } else {
+            pos = Math.min(0, pos);
+            pos = Math.max(-260, pos);
+        }
+        return pos;
+    }
+
     private void paint(Canvas canvas) {
-        double result = screen_pos + delta * 120;
-        result = Math.max(0, result);
-        result = Math.min(500, result);
-        if (moving_edge != -1)
+        if (moving_edge != -1) {
+            if (last_edge != moving_edge && last_dir != -1)
+                moving_dir = last_dir;
             last_edge = moving_edge;
+            last_dir = moving_dir;
+        }
+
+        double result = trimPos(screen_pos + delta * 120);
+
         if (Math.abs(smooth_result - result) <= 6)
             result = smooth_result;
         else
             smooth_result = result;
         int dx = -720;
-        int dy = -2560;
+        int dy = -2136;
         if (last_edge == 0)
-            canvas.drawBitmap(bg, (float)-result + dx, (float)result*2 + dy, drawingView.picPaint);
+            if (moving_dir == 1)
+                canvas.drawBitmap(bg, (float)-result + dx, (float)result*2 + dy, drawingView.picPaint);
+            else
+                canvas.drawBitmap(bg, (float)result*2 + dx, (float)result + dy, drawingView.picPaint);
         else
-            canvas.drawBitmap(bg, (float)result + dx, (float)result*2 + dy, drawingView.picPaint);
+            if (moving_dir == 1)
+                canvas.drawBitmap(bg, (float)result + dx, (float)result*2 + dy, drawingView.picPaint);
+            else
+                canvas.drawBitmap(bg, (float)-result*2 + dx, (float)result + dy, drawingView.picPaint);
     }
 
     public void draw(Canvas canvas) {
@@ -75,6 +95,11 @@ public class MovingScreenDemo extends AbstractDemo {
                     if (Math.abs(now_pos - pos[i].peek()) > 2) {
                         begin_pos[i] = now_pos;
                         moving_edge = i;
+                        if (moving_dir == -1)
+                            if (now_pos > pos[i].peek())
+                                moving_dir = 1;
+                            else
+                                moving_dir = 0;
                     }
                 }
                 if (moving_edge == i)
@@ -84,8 +109,9 @@ public class MovingScreenDemo extends AbstractDemo {
                 pos[i].clear();
                 timestamps[i].clear();
                 screen_pos = screen_pos + delta * 120;
-                screen_pos = Math.max(0, screen_pos);
-                screen_pos = Math.min(500, screen_pos);
+                screen_pos = trimPos(screen_pos);
+                if (screen_pos == 0)
+                    moving_dir = -1;
                 delta = 0;
                 moving_edge = -1;
                 last_pos[i] = now_pos;
