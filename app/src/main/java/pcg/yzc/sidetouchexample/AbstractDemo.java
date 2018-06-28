@@ -1,6 +1,5 @@
 package pcg.yzc.sidetouchexample;
 
-import android.content.Context;
 import android.graphics.Canvas;
 
 public abstract class AbstractDemo {

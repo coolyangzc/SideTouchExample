@@ -1,13 +1,10 @@
 package pcg.yzc.sidetouchexample;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Canvas;
 import android.graphics.PaintFlagsDrawFilter;
-import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -53,7 +50,7 @@ public class DrawingView extends View implements Runnable {
 
         //Load Resources
         lockScreenDemo = new LockScreenDemo(this);
-        cameraDemo = new CameraDemo(this);
+        cameraDemo = new CameraDemo();
         clockDemo = new ClockDemo(this, ctx);
         movingScreenDemo = new MovingScreenDemo(this);
 

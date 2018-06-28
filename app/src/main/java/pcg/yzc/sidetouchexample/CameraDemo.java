@@ -5,12 +5,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 public class CameraDemo extends AbstractDemo {
-    private DrawingView drawingView;
     private Paint paint;
 
-    CameraDemo(DrawingView drawingView_) {
+    CameraDemo() {
         super();
-        drawingView = drawingView_;
         paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setAntiAlias(true);

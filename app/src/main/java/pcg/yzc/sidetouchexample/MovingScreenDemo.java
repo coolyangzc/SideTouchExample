@@ -10,7 +10,7 @@ import java.util.Queue;
 public class MovingScreenDemo extends AbstractDemo {
     public Bitmap bg;
     private DrawingView drawingView;
-    private long lastTime, curTime;
+    private long curTime;
 
     private Queue<Double>[] pos = new Queue[2];
     private Queue<Long>[] timestamps = new Queue[2];
@@ -22,7 +22,6 @@ public class MovingScreenDemo extends AbstractDemo {
     MovingScreenDemo(DrawingView drawingView_) {
         super();
         drawingView = drawingView_;
-        lastTime = SystemClock.uptimeMillis();
 
         for (int i : D) {
             pos[i] = new LinkedList<Double>();
@@ -88,34 +87,6 @@ public class MovingScreenDemo extends AbstractDemo {
             }
         }
 
-        /*
-        if (now_pos != -1) {
-            if (last_pos != -1 && Math.abs(now_pos - last_pos) > 4 || now_pos >= 18) {
-                paint(canvas);
-                return;
-            }
-
-            pos[i].offer(now_pos);
-            timestamps.offer(curTime);
-            if (!moving) {
-                if (Math.abs(now_pos - pos[i].peek()) > 2) {
-                    begin_pos = now_pos;
-                    moving = true;
-                }
-            }
-            if (moving)
-                delta = res.highest_gravity[i] - begin_pos;
-        } else {
-            pos[i].clear();
-            timestamps.clear();
-            screen_pos = screen_pos + delta * 120;
-            screen_pos = Math.max(0, screen_pos);
-            screen_pos = Math.min(500, screen_pos);
-            delta = 0;
-            moving = false;
-        }
-        paint(canvas);
-        last_pos = now_pos;*/
         paint(canvas);
     }
 }
