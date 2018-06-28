@@ -3,6 +3,7 @@ package pcg.yzc.sidetouchexample;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.SystemClock;
+import android.util.Log;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -15,7 +16,7 @@ public class MovingScreenDemo extends AbstractDemo {
     private Queue<Double>[] pos = new Queue[2];
     private Queue<Long>[] timestamps = new Queue[2];
     private int moving_edge = -1, last_edge = -1;
-    private double delta = 0, screen_pos = 0;
+    private double delta = 0, screen_pos = 0, smooth_result = 0;
     private double[] begin_pos = new double[2], last_pos = new double[2];
     private final int[] D = {0, 1};
 
@@ -35,6 +36,10 @@ public class MovingScreenDemo extends AbstractDemo {
         result = Math.min(500, result);
         if (moving_edge != -1)
             last_edge = moving_edge;
+        if (Math.abs(smooth_result - result) <= 6)
+            result = smooth_result;
+        else
+            smooth_result = result;
         int dx = -720;
         int dy = -2560;
         if (last_edge == 0)
@@ -61,7 +66,7 @@ public class MovingScreenDemo extends AbstractDemo {
                 continue;
             }
             if (now_pos != -1) {
-                if (last_pos[i] != -1 && Math.abs(now_pos - last_pos[i]) > 4 || now_pos >= 18) {
+                if (last_pos[i] != -1 && Math.abs(now_pos - last_pos[i]) > 4 || now_pos >= 19) {
                     continue;
                 }
                 pos[i].offer(now_pos);
