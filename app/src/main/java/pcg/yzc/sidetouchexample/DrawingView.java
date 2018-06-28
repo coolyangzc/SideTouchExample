@@ -52,7 +52,7 @@ public class DrawingView extends View implements Runnable {
         lockScreenDemo = new LockScreenDemo(this);
         cameraDemo = new CameraDemo();
         clockDemo = new ClockDemo(this, ctx);
-        movingScreenDemo = new MovingScreenDemo(this);
+        movingScreenDemo = new MovingScreenDemo(this, ctx);
 
         lockScreenDemo.bg_empty = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_bg);
         lockScreenDemo.bg_L = BitmapFactory.decodeResource(getResources(), R.mipmap.sea_l);

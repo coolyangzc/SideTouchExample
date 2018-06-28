@@ -1,8 +1,10 @@
 package pcg.yzc.sidetouchexample;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.SystemClock;
+import android.os.Vibrator;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -11,6 +13,7 @@ public class MovingScreenDemo extends AbstractDemo {
     public Bitmap bg;
     private DrawingView drawingView;
     private long curTime;
+    private Vibrator vibrator;
 
     private Queue<Double>[] pos = new Queue[2];
     private Queue<Long>[] timestamps = new Queue[2];
@@ -19,9 +22,12 @@ public class MovingScreenDemo extends AbstractDemo {
     private double[] begin_pos = new double[2], last_pos = new double[2];
     private final int[] D = {0, 1};
 
-    MovingScreenDemo(DrawingView drawingView_) {
+    private final int DX = -720, DY = -2136;
+
+    MovingScreenDemo(DrawingView drawingView_, Context ctx_) {
         super();
         drawingView = drawingView_;
+        vibrator = (Vibrator)ctx_.getSystemService(ctx_.VIBRATOR_SERVICE);
 
         for (int i : D) {
             pos[i] = new LinkedList<Double>();
@@ -52,20 +58,22 @@ public class MovingScreenDemo extends AbstractDemo {
 
         if (Math.abs(smooth_result - result) <= 6)
             result = smooth_result;
-        else
+        else {
+            if (result == 0)
+                vibrator.vibrate(16);
             smooth_result = result;
-        int dx = -720;
-        int dy = -2136;
+        }
+
         if (last_edge == 0)
             if (moving_dir == 1)
-                canvas.drawBitmap(bg, (float)-result + dx, (float)result*2 + dy, drawingView.picPaint);
+                canvas.drawBitmap(bg, (float)-result + DX, (float)result*2 + DY, drawingView.picPaint);
             else
-                canvas.drawBitmap(bg, (float)result*2 + dx, (float)result + dy, drawingView.picPaint);
+                canvas.drawBitmap(bg, (float)result*2 + DX, (float)result + DY, drawingView.picPaint);
         else
             if (moving_dir == 1)
-                canvas.drawBitmap(bg, (float)result + dx, (float)result*2 + dy, drawingView.picPaint);
+                canvas.drawBitmap(bg, (float)result + DX, (float)result*2 + DY, drawingView.picPaint);
             else
-                canvas.drawBitmap(bg, (float)-result*2 + dx, (float)result + dy, drawingView.picPaint);
+                canvas.drawBitmap(bg, (float)-result*2 + DX, (float)result + DY, drawingView.picPaint);
     }
 
     public void draw(Canvas canvas) {
